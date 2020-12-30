@@ -2,13 +2,6 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <modules>
-        <module>rpc-protocol</module>
-        <module>rpc-serialize</module>
-        <module>rpc-discover</module>
-        <module>rpc-common</module>
-        <module>rpc-client</module>
-    </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -32,6 +25,14 @@
     <properties>
         <java.version>1.8</java.version>
     </properties>
+
+    <modules>
+        <module>rpc-protocol</module>
+        <module>rpc-serialize</module>
+        <module>rpc-discover</module>
+        <module>rpc-common</module>
+        <module>rpc-client</module>
+    </modules>
 
     <dependencies>
         <dependency>
