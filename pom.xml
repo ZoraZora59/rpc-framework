@@ -32,6 +32,7 @@
         <module>rpc-discover</module>
         <module>rpc-common</module>
         <module>rpc-client</module>
+        <module>rpc-demo</module>
     </modules>
 
     <dependencies>
