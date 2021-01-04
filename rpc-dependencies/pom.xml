@@ -2,24 +2,22 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>rpc-framework</artifactId>
-        <groupId>com.zora</groupId>
-        <version>${global.version}</version>
-    </parent>
-    <packaging>pom</packaging>
+
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>rpc-demo</artifactId>
-    <modules>
-        <module>rpc-demo-api</module>
-        <module>rpc-demo-consumer</module>
-        <module>rpc-demo-provider</module>
-    </modules>
+    <groupId>com.zora</groupId>
+    <artifactId>rpc-dependencies</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+        </dependencies>
+    </dependencyManagement>
 
 </project>

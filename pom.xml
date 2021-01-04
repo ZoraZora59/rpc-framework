@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.zora</groupId>
     <artifactId>rpc-framework</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>${global.version}</version>
     <name>rpc-framework</name>
     <description>Personal practice rpc framework.</description>
     <packaging>pom</packaging>
@@ -24,6 +24,10 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <file-encoding>UTF-8</file-encoding>
+        <maven-jar.version>3.2.0</maven-jar.version>
+        <maven-compiler.version>3.6.0</maven-compiler.version>
+        <global.version>0.1-SNAPSHOT</global.version>
     </properties>
 
     <modules>
@@ -33,7 +37,20 @@
         <module>rpc-common</module>
         <module>rpc-client</module>
         <module>rpc-demo</module>
+        <module>rpc-dependencies</module>
     </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.zora</groupId>
+                <artifactId>rpc-dependencies</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -55,11 +72,37 @@
     <build>
         <plugins>
             <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar.version}</version>
+                <configuration>
+                    <archive>
+                        <addMavenDescriptor>true</addMavenDescriptor>
+                        <index>true</index>
+                        <manifest>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <Specification-Version>${project.version}</Specification-Version>
+                            <Implementation-Version>${project.version}</Implementation-Version>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler.version}</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <compilerArgs>
+                        <compilerArg>-proc:none</compilerArg>
+                        <compilerArg>-parameters</compilerArg>
+                    </compilerArgs>
+                    <fork>true</fork>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${file-encoding}</encoding>
                 </configuration>
             </plugin>
         </plugins>

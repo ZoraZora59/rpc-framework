@@ -3,19 +3,13 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>rpc-framework</artifactId>
+        <artifactId>rpc-demo</artifactId>
         <groupId>com.zora</groupId>
         <version>${global.version}</version>
     </parent>
-    <packaging>pom</packaging>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>rpc-demo</artifactId>
-    <modules>
-        <module>rpc-demo-api</module>
-        <module>rpc-demo-consumer</module>
-        <module>rpc-demo-provider</module>
-    </modules>
+    <artifactId>rpc-demo-api</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
