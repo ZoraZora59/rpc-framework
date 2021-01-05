@@ -10,10 +10,21 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>rpc-demo-provider</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>4.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zora</groupId>
+            <artifactId>rpc-demo-api</artifactId>
+            <version>${global.version}</version>
+        </dependency>
+    </dependencies>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
-
 </project>
