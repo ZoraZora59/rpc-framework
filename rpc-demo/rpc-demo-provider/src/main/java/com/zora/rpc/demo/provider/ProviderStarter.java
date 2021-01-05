@@ -2,6 +2,7 @@ package com.zora.rpc.demo.provider;
 
 import com.zora.rpc.common.thread.DefaultThreadFactory;
 import com.zora.rpc.demo.api.Constants;
+import com.zora.rpc.serialize.util.RpcSerializeUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class ProviderStarter {
 
     static class ServerRunner implements Runnable {
         Semaphore semaphore;
-        ExecutorService executorService = new ThreadPoolExecutor(2, 2,
+        ExecutorService socketExecutor = new ThreadPoolExecutor(2, 8,
                 0, TimeUnit.SECONDS,
                 new ArrayBlockingQueue<>(4),
                 new DefaultThreadFactory.Builder().namePrefix("socket-pool").build());
@@ -51,16 +52,16 @@ public class ProviderStarter {
                 AtomicInteger counter = new AtomicInteger(0);
                 while (true) {
                     Socket socket = serverSocket.accept();
-                    executorService.execute(() -> {
+                    socketExecutor.execute(() -> {
                         try {
                             log.info("socket建立连接，连接信息「ip = {} , port = {} , hashcode = {}」", socket.getInetAddress().toString(), socket.getPort(), socket.hashCode());
+                            log.info("socket收到数据[{}]", RpcSerializeUtil.deserializeRequest(socket.getInputStream()).toString());
                             Thread.sleep(5000);
                             socket.close();
                         } catch (IOException | InterruptedException e) {
                             e.printStackTrace();
                         }
                     });
-
                     log.info("轮询-{}-完成", counter.incrementAndGet());
                 }
             } catch (IOException e) {

@@ -36,5 +36,10 @@
             <artifactId>rpc-common</artifactId>
             <version>${global.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.zora</groupId>
+            <artifactId>rpc-serialize</artifactId>
+            <version>${global.version}</version>
+        </dependency>
     </dependencies>
 </project>
