@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * <h3>rpc-framework</h3>
  * <h4>com.zora.rpc.common.model</h4>
@@ -17,7 +19,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RpcRequest {
+public class RpcRequest implements Serializable {
+    private String requestId;
     private String requestTarget;
     private Object[] requestBody;
 }

@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * <h3>rpc-framework</h3>
  * <h4>com.zora.rpc.common.model</h4>
@@ -18,7 +20,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RpcResponse<T> {
+public class RpcResponse<T> implements Serializable {
+    private String requestId;
     private Boolean success;
     private Integer code;
     private String message;
