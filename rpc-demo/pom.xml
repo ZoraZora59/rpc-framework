@@ -22,4 +22,19 @@
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.zora</groupId>
+            <artifactId>rpc-common</artifactId>
+            <version>${global.version}</version>
+        </dependency>
+    </dependencies>
 </project>

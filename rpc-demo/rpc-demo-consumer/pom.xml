@@ -16,4 +16,11 @@
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.zora</groupId>
+            <artifactId>rpc-demo-api</artifactId>
+            <version>${global.version}</version>
+        </dependency>
+    </dependencies>
 </project>
