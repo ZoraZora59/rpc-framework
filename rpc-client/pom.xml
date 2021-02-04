@@ -16,4 +16,21 @@
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.zora</groupId>
+            <artifactId>rpc-serialize</artifactId>
+            <version>${global.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zora</groupId>
+            <artifactId>rpc-common</artifactId>
+            <version>${global.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>

@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.UUID;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -53,13 +54,21 @@ public class ProviderStarter {
                 while (true) {
                     Socket socket = serverSocket.accept();
                     socketExecutor.execute(() -> {
+                        String uuid = UUID.randomUUID().toString();
                         try {
-                            log.info("socket建立连接，连接信息「ip = {} , port = {} , hashcode = {}」", socket.getInetAddress().toString(), socket.getPort(), socket.hashCode());
-                            log.info("socket收到数据[{}]", RpcSerializeUtil.deserializeRequest(socket.getInputStream()).toString());
-                            Thread.sleep(5000);
-                            socket.close();
-                        } catch (IOException | InterruptedException e) {
-                            e.printStackTrace();
+                            log.info("socket建立连接，id[{}]，连接信息「ip = {} , port = {} , hashcode = {}」",uuid, socket.getInetAddress().toString(), socket.getPort(), socket.hashCode());
+                            while (true){
+                                log.info("socket收到数据[{}]", RpcSerializeUtil.deserializeRequest(socket.getInputStream()).toString());
+                            }
+                        } catch (IOException | InterruptedException ignore) {
+
+                        }finally {
+                            try {
+                                socket.close();
+                                log.info("连接[{}]释放",uuid);
+                            } catch (IOException ignore) {
+
+                            }
                         }
                     });
                     log.info("轮询-{}-完成", counter.incrementAndGet());

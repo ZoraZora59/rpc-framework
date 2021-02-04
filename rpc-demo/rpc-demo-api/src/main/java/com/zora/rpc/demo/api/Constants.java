@@ -10,4 +10,5 @@ package com.zora.rpc.demo.api;
  */
 public class Constants {
     public static final int PORT = 13120;
+    public static final byte[] SPLIT="\r\n".getBytes();
 }
