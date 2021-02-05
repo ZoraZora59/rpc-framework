@@ -1,5 +1,6 @@
 package com.zora.rpc.client.server;
 
+import com.zora.rpc.client.handler.IRpcHandler;
 import com.zora.rpc.common.thread.DefaultThreadFactory;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,12 +22,12 @@ public class ServerSocketManager {
             new DefaultThreadFactory.Builder().namePrefix("SERVER_SOCKET").single(true).build());
     private final Semaphore semaphore = new Semaphore(0);
 
-    public ServerSocketManager(int port) {
-        SERVER_SOCKET_EXECUTOR.execute(new ServerSocketRunner(semaphore, port));
+    public ServerSocketManager(IRpcHandler handler, int port) {
+        SERVER_SOCKET_EXECUTOR.execute(new ServerSocketRunner(handler,semaphore, port));
     }
 
-    public ServerSocketManager(int port, int core, int max, int queueLength) {
-        SERVER_SOCKET_EXECUTOR.execute(new ServerSocketRunner(semaphore, port, core, max, queueLength));
+    public ServerSocketManager(IRpcHandler handler, int port, int core, int max, int queueLength) {
+        SERVER_SOCKET_EXECUTOR.execute(new ServerSocketRunner(handler,semaphore, port, core, max, queueLength));
     }
 
     public synchronized void close() {

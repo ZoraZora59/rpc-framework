@@ -1,6 +1,9 @@
 package com.zora.rpc.client.server;
 
+import com.zora.rpc.client.handler.IRpcHandler;
 import com.zora.rpc.common.exception.RpcException;
+import com.zora.rpc.common.model.RpcRequest;
+import com.zora.rpc.common.model.RpcResponse;
 import com.zora.rpc.common.thread.DefaultThreadFactory;
 import com.zora.rpc.serialize.util.RpcSerializeUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -25,13 +28,15 @@ public class ServerSocketRunner implements Runnable {
     Semaphore semaphore;
     int port;
     ExecutorService socketExecutor;
+    IRpcHandler handler;
 
-    ServerSocketRunner(Semaphore semaphore, int port) {
-        this(semaphore,port,2,8,4);
+    ServerSocketRunner(IRpcHandler rpcHandler,Semaphore semaphore, int port) {
+        this(rpcHandler,semaphore,port,12,24,8);
     }
 
-    ServerSocketRunner(Semaphore semaphore, int port,int core,int max,int queueLength) {
+    ServerSocketRunner(IRpcHandler rpcHandler,Semaphore semaphore, int port,int core,int max,int queueLength) {
         this.semaphore = semaphore;
+        this.handler=rpcHandler;
         this.port = port;
         socketExecutor= new ThreadPoolExecutor(core, max,
                 60, TimeUnit.SECONDS,
@@ -45,29 +50,40 @@ public class ServerSocketRunner implements Runnable {
             AtomicInteger counter = new AtomicInteger(0);
             while (true) {
                 Socket socket = serverSocket.accept();
-                socketExecutor.execute(() -> {
-                    String uuid = UUID.randomUUID().toString();
-                    try {
-                        log.info("socket建立连接，id[{}]，连接信息「ip = {} , port = {} , hashcode = {}」", uuid, socket.getInetAddress().toString(), socket.getPort(), socket.hashCode());
-                        while (true) {
-                            log.info("socket收到数据[{}]", RpcSerializeUtil.deserializeRequest(socket.getInputStream()).toString());
-                        }
-                    } catch (IOException | RpcException ex) {
-                        if (ex instanceof RpcException && ((RpcException) ex).getRpcCode() == -1) {
-                            log.warn("socket连接被远端关闭");
-                        } else {
-                            log.error("socket连接意外中断", ex);
-                        }
-                    } finally {
+                try {
+                    socketExecutor.execute(() -> {
+                        String uuid = UUID.randomUUID().toString();
                         try {
-                            socket.close();
-                            log.info("连接[{}]释放", uuid);
-                        } catch (IOException ignore) {
+                            log.debug("socket建立连接，id[{}]，连接信息「ip = {} , port = {} , hashcode = {}」", uuid, socket.getInetAddress().toString(), socket.getPort(), socket.hashCode());
+                            while (true) {
+                                RpcRequest request = RpcSerializeUtil.deserializeRequest(socket.getInputStream());
+                                log.debug("socket收到数据[{}]", request);
+                                RpcResponse<?> response = handler.handle(request);
+                                if (response.getCode()==200){
+                                    log.debug("rpc调用完成，响应[{}]",response);
+                                }else {
+                                    log.warn("rpc调用返回特殊状态码，响应[{}]",response);
+                                }
+                            }
+                        } catch (IOException | RpcException ex) {
+                            if (ex instanceof RpcException && ((RpcException) ex).getRpcCode() == -1) {
+                                log.warn("socket连接被远端关闭");
+                            } else {
+                                log.error("socket连接意外中断", ex);
+                            }
+                        } finally {
+                            try {
+                                socket.close();
+                                log.debug("连接[{}]释放", uuid);
+                            } catch (IOException ignore) {
 
+                            }
                         }
-                    }
-                });
-                log.info("轮询-{}-完成", counter.incrementAndGet());
+                    });
+                }catch (RejectedExecutionException rejectedExecutionEx){
+                    log.error("任务被拒绝");
+                }
+                log.debug("轮询-{}-完成", counter.incrementAndGet());
             }
         } catch (IOException e) {
             log.error("服务器线程遇到问题", e);

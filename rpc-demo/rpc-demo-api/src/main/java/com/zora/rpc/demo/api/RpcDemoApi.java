@@ -1,5 +1,7 @@
 package com.zora.rpc.demo.api;
 
+import com.zora.rpc.common.model.RpcResponse;
+
 import java.util.List;
 
 /**
@@ -18,5 +20,5 @@ public interface RpcDemoApi {
      * @param count   列表长度
      * @return 连续的数字列表
      */
-    List<Integer> getIntegerList(Integer startAt, Integer count);
+   RpcResponse< List<Integer>> getIntegerList(Integer startAt, Integer count);
 }

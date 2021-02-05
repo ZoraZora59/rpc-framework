@@ -38,12 +38,7 @@
         </dependency>
         <dependency>
             <groupId>com.zora</groupId>
-            <artifactId>rpc-common</artifactId>
-            <version>${global.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.zora</groupId>
-            <artifactId>rpc-serialize</artifactId>
+            <artifactId>rpc-spring</artifactId>
             <version>${global.version}</version>
         </dependency>
     </dependencies>

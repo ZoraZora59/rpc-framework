@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.UUID;
 
@@ -22,21 +23,22 @@ import java.util.UUID;
  */
 @Slf4j
 public class ClientSocketManager {
-    private final Socket socket ;
+    private final Socket socket;
     private final OutputStream outputStream;
-    public ClientSocketManager(String host,int port) throws IOException {
 
-        socket = new Socket(host,port);
-        log.info("socket建立连接,ip = {} , port = {}", socket.getInetAddress().toString(), socket.getPort());
-       outputStream  = socket.getOutputStream();
+    public ClientSocketManager(String host, int port) throws IOException {
+
+        socket = new Socket(host, port);
+        log.debug("socket建立连接,ip = {} , port = {}", socket.getInetAddress().toString(), socket.getPort());
+        outputStream = socket.getOutputStream();
 
     }
 
-    public void call(String target,String body) throws IOException {
+    public void call(String target, Object[] args) throws IOException {
         byte[] bytes = RpcSerializeUtil.serialize(RpcRequest.builder()
                 .requestId(UUID.randomUUID().toString())
                 .requestTarget(target)
-                .requestBody(Collections.singleton(body).toArray())
+                .requestBody(args)
                 .build());
         outputStream.write(ByteConvertUtil.intToBytes(bytes.length));
         outputStream.write(bytes);
@@ -45,6 +47,6 @@ public class ClientSocketManager {
 
     public synchronized void close() throws IOException {
         socket.close();
-        log.info("socket链接关闭");
+        log.debug("socket链接关闭");
     }
 }

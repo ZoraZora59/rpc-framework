@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.zora.rpc.spring.RpcAutoConfiguration,\
+  com.zora.rpc.spring.aop.RpcProviderAop,\
+  com.zora.rpc.spring.aop.RpcConsumerAop
