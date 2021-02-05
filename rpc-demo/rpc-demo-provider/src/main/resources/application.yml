@@ -1,5 +1,5 @@
 rpc:
   port: 13120
-  coreThread: 12
-  maxThread: 32
-  queueLength: 8
+  coreThread: 64
+  maxThread: 64
+  queueLength: 12

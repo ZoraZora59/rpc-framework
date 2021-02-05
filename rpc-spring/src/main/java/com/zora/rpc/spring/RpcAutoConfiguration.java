@@ -7,13 +7,11 @@ import com.zora.rpc.spring.handler.RpcHandler;
 import com.zora.rpc.spring.property.RpcProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
