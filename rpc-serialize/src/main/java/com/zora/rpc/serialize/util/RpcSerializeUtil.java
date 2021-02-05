@@ -1,6 +1,7 @@
 package com.zora.rpc.serialize.util;
 
 import com.alibaba.fastjson.JSON;
+import com.zora.rpc.common.exception.RpcException;
 import com.zora.rpc.common.model.RpcRequest;
 import com.zora.rpc.common.model.RpcResponse;
 import com.zora.rpc.common.util.ByteConvertUtil;
@@ -29,15 +30,15 @@ public class RpcSerializeUtil {
         return JSON.parseObject(inputStream, RpcResponse.class);
     }
 
-    public static RpcRequest deserializeRequest(InputStream inputStream) throws IOException, InterruptedException {
+    public static RpcRequest deserializeRequest(InputStream inputStream) throws IOException, RpcException {
         byte[] bytes = new byte[4];
         int readCount = inputStream.read(bytes);
         if (readCount == -1) {
-            throw new InterruptedException();
+            throw new RpcException(-1, "连接被关闭");
         }
         int range = ByteConvertUtil.bytesToInt(bytes);
         byte[] inputBytes = new byte[range];
-        inputStream.read(inputBytes,0,range);
+        inputStream.read(inputBytes, 0, range);
         return JSON.parseObject(inputBytes, RpcRequest.class);
     }
 

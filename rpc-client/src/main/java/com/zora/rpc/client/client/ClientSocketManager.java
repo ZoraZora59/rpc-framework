@@ -43,7 +43,8 @@ public class ClientSocketManager {
         outputStream.flush();
     }
 
-    public void close() throws IOException {
+    public synchronized void close() throws IOException {
         socket.close();
+        log.info("socket链接关闭");
     }
 }

@@ -30,10 +30,6 @@ public class ConsumerStarter {
             log.info("msg sended");
             clientSocketManager.call("iambody");
             log.info("msg sended");
-//            clientSocketManager.call("iambody");
-//            log.info("msg sended");
-//            clientSocketManager.call("iambody");
-//            log.info("msg sended");
         }finally {
             if (clientSocketManager!=null){
                 clientSocketManager.close();
