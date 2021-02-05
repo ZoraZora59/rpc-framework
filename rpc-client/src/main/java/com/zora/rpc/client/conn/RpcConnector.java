@@ -1,8 +1,6 @@
 package com.zora.rpc.client.conn;
 
 import com.alibaba.fastjson.JSON;
-import com.zora.rpc.client.client.ClintInitializer;
-import com.zora.rpc.client.server.ServerInitializer;
 import com.zora.rpc.common.model.RpcRequest;
 import com.zora.rpc.common.model.RpcResponse;
 import com.zora.rpc.common.model.ServiceMetaData;
@@ -37,43 +35,7 @@ public class RpcConnector implements IConnector {
     private volatile LinkedBlockingDeque<String> messageQueue = new LinkedBlockingDeque<>();
 
     public RpcConnector(int localPort, ServiceMetaData metaData) {
-        executorService.execute(() -> {
-            EventLoopGroup bossGroup = new NioEventLoopGroup();
-            EventLoopGroup workerGroup = new NioEventLoopGroup();
-            serverBootstrap = new ServerBootstrap();
-            try {
 
-                serverBootstrap.group(bossGroup, workerGroup)
-                        .channel(NioServerSocketChannel.class).
-                        childHandler(new ServerInitializer());
-                ChannelFuture channelFuture = serverBootstrap.bind(localPort).sync();//绑定端口
-                channelFuture.channel().closeFuture().sync();
-            } catch (Exception exception) {
-                log.error("服务端创建失败", exception);
-                bossGroup.shutdownGracefully();
-                workerGroup.shutdownGracefully();
-            }
-        });
-        executorService.execute(() -> {
-            EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
-
-            try {
-                bootstrap = new Bootstrap();
-                bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class).
-                        handler(new ClintInitializer());
-                Channel channel = bootstrap.connect(metaData.getIpAddress(), metaData.getPort())
-//                        .sync()
-                        .channel();
-
-                while (true) {
-                    channel.writeAndFlush(messageQueue.poll() + "\r\n");
-                }
-            } catch (Exception e) {
-                log.error("客户端创建失败", e);
-            } finally {
-                eventLoopGroup.shutdownGracefully();
-            }
-        });
     }
 
     @Override

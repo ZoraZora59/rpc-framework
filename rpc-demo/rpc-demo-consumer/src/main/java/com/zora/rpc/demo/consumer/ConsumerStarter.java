@@ -26,9 +26,9 @@ public class ConsumerStarter {
         ClientSocketManager clientSocketManager=null;
         try {
             clientSocketManager = new ClientSocketManager("127.0.0.1",Constants.PORT);
-            clientSocketManager.call("iambody");
+            clientSocketManager.call("demotarget","iambody");
             log.info("msg sended");
-            clientSocketManager.call("iambody");
+            clientSocketManager.call("demotarget","iambody");
             log.info("msg sended");
         }finally {
             if (clientSocketManager!=null){

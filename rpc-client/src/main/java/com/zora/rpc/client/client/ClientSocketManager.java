@@ -32,10 +32,10 @@ public class ClientSocketManager {
 
     }
 
-    public void call(String body) throws IOException {
+    public void call(String target,String body) throws IOException {
         byte[] bytes = RpcSerializeUtil.serialize(RpcRequest.builder()
                 .requestId(UUID.randomUUID().toString())
-                .requestTarget("targetIsMe")
+                .requestTarget(target)
                 .requestBody(Collections.singleton(body).toArray())
                 .build());
         outputStream.write(ByteConvertUtil.intToBytes(bytes.length));
